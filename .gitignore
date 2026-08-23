@@ -1,25 +1,23 @@
-# Virtual environment
-.venv/
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
 
-# Environment variables / secrets
+# Environment
 .env
+.env.local
+.env.production
 
-# Python cache
-__pycache__/
-*.py[cod]
-
-# Distribution / build files
-build/
-dist/
-*.egg-info/
-
-# IDE / editor files
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs
+# Build artifacts
 *.log
