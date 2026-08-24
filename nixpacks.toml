@@ -8,4 +8,4 @@ cmds = ["echo 'Installing dependencies...'"]
 cmds = ["cargo build --release"]
 
 [start]
-cmd = "./target/release/my-ai-coder-server"
+cmd = "cargo run --release"
