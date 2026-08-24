@@ -30,3 +30,6 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # Time
 chrono = "0.4"
+
+# Pin zeroize to avoid edition2024 requirement
+zeroize = "=1.8.1"

@@ -7,7 +7,7 @@ mod models;
 use crate::{
     client::LlmClient,
     config::Config,
-    handlers::{chat, health, root, AppState},
+    handlers::{chat, get_balance, health, root, validate_api_key, AppState},
 };
 use axum::{
     routing::{get, post},
@@ -66,12 +66,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/", get(root))
         .route("/health", get(health))
         .route("/chat", post(chat))
+        .route("/api/auth/validate", post(validate_api_key))
+        .route("/api/auth/balance", post(get_balance))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);
 
     // Start server
-    let addr = SocketAddr::from(([127, 0, 0, 1], config.port));
+    // Parse host string to SocketAddr compatible format
+    let host_octets: [u8; 4] = if config.host == "0.0.0.0" {
+        [0, 0, 0, 0]
+    } else {
+        [127, 0, 0, 1]
+    };
+    
+    let addr = SocketAddr::from((host_octets, config.port));
     let listener = tokio::net::TcpListener::bind(&addr).await?;
 
     info!("Server listening on {}", addr);

@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["rust", "cargo"]
+
+[phases.install]
+cmds = ["echo 'Installing dependencies...'"]
+
+[phases.build]
+cmds = ["cargo build --release"]
+
+[start]
+cmd = "./target/release/my-ai-coder-server"

@@ -26,8 +26,10 @@ impl Config {
         let llm_model = env::var("LLM_MODEL")
             .unwrap_or_else(|_| "gpt-4o".to_string());
 
+        // Railway provides HOST and PORT automatically
+        // Default to 0.0.0.0 for Railway/Docker compatibility
         let host = env::var("HOST")
-            .unwrap_or_else(|_| "127.0.0.1".to_string());
+            .unwrap_or_else(|_| "0.0.0.0".to_string());
 
         let port = env::var("PORT")
             .unwrap_or_else(|_| "8000".to_string())

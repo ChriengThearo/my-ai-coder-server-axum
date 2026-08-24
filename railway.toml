@@ -1,0 +1,7 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "./target/release/my-ai-coder-server"
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 3

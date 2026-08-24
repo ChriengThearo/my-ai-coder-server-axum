@@ -1,7 +1,7 @@
 use crate::{
     client::LlmClient,
     error::AppError,
-    models::{ChatRequest, ChatResponse, HealthResponse, LlmRequest, Message},
+    models::{BalanceResponse, ChatRequest, ChatResponse, HealthResponse, LlmRequest, Message, ValidateRequest, ValidateResponse},
 };
 use axum::{extract::State, Json};
 use std::time::Instant;
@@ -96,5 +96,64 @@ pub async fn chat(
 
     Ok(Json(ChatResponse {
         message: assistant_message,
+    }))
+}
+
+/// Validate API key endpoint
+pub async fn validate_api_key(
+    State(_state): State<AppState>,
+    Json(request): Json<ValidateRequest>,
+) -> Result<Json<ValidateResponse>, AppError> {
+    info!("========== API KEY VALIDATION ==========");
+    info!("API Key: {}...", &request.api_key.chars().take(10).collect::<String>());
+
+    // TODO: Replace with actual database lookup
+    // For now, accept any key starting with "oca_"
+    let valid = request.api_key.starts_with("oca_");
+
+    if valid {
+        info!("✓ API key valid");
+        info!("========================================");
+        
+        Ok(Json(ValidateResponse {
+            valid: true,
+            user_id: Some("user_123".to_string()),
+            email: Some("user@example.com".to_string()),
+            credits_remaining: Some(10000.0),
+        }))
+    } else {
+        info!("✗ API key invalid");
+        info!("========================================");
+        
+        Ok(Json(ValidateResponse {
+            valid: false,
+            user_id: None,
+            email: None,
+            credits_remaining: None,
+        }))
+    }
+}
+
+/// Get credit balance endpoint
+pub async fn get_balance(
+    State(_state): State<AppState>,
+    Json(request): Json<ValidateRequest>,
+) -> Result<Json<BalanceResponse>, AppError> {
+    info!("========== BALANCE CHECK ==========");
+    info!("API Key: {}...", &request.api_key.chars().take(10).collect::<String>());
+
+    // TODO: Replace with actual database lookup
+    // For now, accept any key starting with "oca_"
+    if !request.api_key.starts_with("oca_") {
+        return Err(AppError::Unauthorized("Invalid API key".to_string()));
+    }
+
+    info!("✓ Balance retrieved");
+    info!("===================================");
+
+    Ok(Json(BalanceResponse {
+        credits_remaining: 10000.0,
+        user_id: "user_123".to_string(),
+        email: "user@example.com".to_string(),
     }))
 }

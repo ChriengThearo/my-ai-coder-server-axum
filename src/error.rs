@@ -11,6 +11,9 @@ pub enum AppError {
     #[error("Bad request: {0}")]
     BadRequest(String),
 
+    #[error("Unauthorized: {0}")]
+    Unauthorized(String),
+
     #[error("LLM API error: {0}")]
     LlmApiError(String),
 
@@ -31,6 +34,7 @@ impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let (status, error_message) = match self {
             AppError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
+            AppError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg),
             AppError::RateLimitError(msg) => (StatusCode::TOO_MANY_REQUESTS, msg),
             AppError::TimeoutError(msg) => (StatusCode::GATEWAY_TIMEOUT, msg),
             AppError::ConnectionError(msg) => (StatusCode::BAD_GATEWAY, msg),

@@ -127,3 +127,29 @@ pub struct HealthResponse {
     pub message: Option<String>,
     pub model: String,
 }
+
+/// Auth validate request
+#[derive(Debug, Deserialize)]
+pub struct ValidateRequest {
+    pub api_key: String,
+}
+
+/// Auth validate response
+#[derive(Debug, Serialize)]
+pub struct ValidateResponse {
+    pub valid: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credits_remaining: Option<f64>,
+}
+
+/// Balance response
+#[derive(Debug, Serialize)]
+pub struct BalanceResponse {
+    pub credits_remaining: f64,
+    pub user_id: String,
+    pub email: String,
+}
