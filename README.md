@@ -354,3 +354,4 @@ MIT License - See LICENSE file for details
 **Status**: ✅ Ready to deploy! All core endpoints implemented and tested.
 
 Built with ❤️ using Rust and Axum
+# my-ai-coder-server-axum
